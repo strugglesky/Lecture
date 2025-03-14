@@ -10,18 +10,23 @@
 
 using namespace std;
 
-int GCD(int a, int b) {
-    if (b == 0) {
-        return a;
-    } else {
-        return GCD(b, a % b);
-    }
+int getGCD(int x,int y){//最大公约数 
+	int n = min(x,y);
+	int ans = 1;
+	for(int i = 1; i <= n; i++){
+		if(x % i == 0 && y % i == 0){
+			ans = max(ans,i);
+		}
+	}
+	return ans;
 }
-
-int main() {
-    int a, b;
-    while (scanf("%d%d", &a, &b) != EOF) {
-        printf("%d\n", a * b / GCD(a, b));
-    }
-    return 0;
+int getLCM(int a,int b){//最小公倍数 
+	return (a * b) / getGCD(a,b);
+}
+int main(){
+	int a,b;
+	while(cin >> a >>b){
+		cout << getLCM(a,b) << endl;
+	}
+	return 0;
 }
