@@ -6,54 +6,34 @@
 */
 
 #include <iostream>
-#include <cstdio>
-#include <vector>
 #include <cmath>
-
 using namespace std;
 
-const int MAXN = 4e4;
-
-vector<int> prime;                       		//保存质数
-bool isPrime[MAXN];                  			//标记数组
-
-void Initial() {
-    for (int i = 0; i < MAXN; ++i) {			//初始化
-        isPrime[i] = true;
+int countPrimeFactors(int n) {
+    int count = 0;
+    // 处理因数2
+    while (n % 2 == 0) {
+        count++;
+        n /= 2;
     }
-    isPrime[0] = false;
-    isPrime[1] = false;
-    for (int i = 2; i < MAXN; ++i) {
-        if (!isPrime[i]) {             			//非质数则跳过
-            continue;
-        }
-        prime.push_back(i);
-        if (i > MAXN / i) {                     //过大的数提前跳出
-            continue;
-        }
-        for (int j = i * i; j < MAXN; j += i) {
-            isPrime[j] = false;        			//质数的倍数为非质数
+    // 处理奇数因数
+    for (int i = 3; i <= sqrt(n); i += 2) {
+        while (n % i == 0) {
+            count++;
+            n /= i;
         }
     }
-    return ;
+    // 如果n大于1，说明n本身是一个质数
+    if (n > 1) {
+        count++;
+    }
+    return count;
 }
 
 int main() {
-    Initial();
     int n;
-    while (scanf("%d", &n) != EOF) {
-        int answer = 0;
-        for (int i = 0; i < prime.size() && prime[i] < n; ++i) {
-            int factor = prime[i];
-            while (n % factor == 0) {           //不断试除
-                n /= factor;
-                answer++;
-            }
-        }
-        if (n > 1) {                            //还存在一个质因数
-            answer++;
-        }
-        printf("%d\n", answer);
+    while (cin >> n) {
+        cout << countPrimeFactors(n) << endl;
     }
     return 0;
 }
